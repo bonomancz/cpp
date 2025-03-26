@@ -17,11 +17,11 @@ Starting wallboardScreens:
 Configuration options:
 ----------------------
 
-; main loop interval ( > 0 )
+; main loop interval ( > 0 )<br />
 service_loop_timeout = 10000
 
-; wallboard thread terminate interval ( > 0 )
+; wallboard thread terminate interval ( > 0 )<br />
 service_thread_timeout = 8000
 
-; default browser location path
+; default browser location path<br />
 service_browser_path = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
