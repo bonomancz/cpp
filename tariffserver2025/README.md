@@ -8,12 +8,12 @@ C++ Linux network billing server for Avaya PBX. It uses its own network stack wi
 It stores billing sentences in mysql database.<br />
 It can be easily adapted for any other database type like postgresql and others.<br />
 Extra header files used.<br />
-<thread>
-<mutex>
-<socket>
+<thread><br />
+<mutex><br />
+<socket><br />
 <sstream>
-<deque>
-<mariadb/mysql.h>
+<deque><br />
+<mariadb/mysql.h><br /><br />
 
 Command line usage:
 -----------------------------------
