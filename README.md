@@ -11,3 +11,4 @@ C++ projects:
 - tcpKeepaliveServer2 (TCP transmission validation command line tool)
 - ntpClient (Windows OS NTP client command line tool gets server NTP response)
 - linked list (demonstrates using of templates and smartpointers against memory leaks)
+- diskConsumptionFinder (very usefull tool to find most disk consumption directory)
