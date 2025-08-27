@@ -15,7 +15,7 @@ private:
 public:
 	Datas();
 	void trim(std::string& message);
-	std::string getSendMessage();
+	std::string getSendMessage(std::string &clientId);
 	std::string getServerResponse(std::string& message);
 	void setRemoteHost(std::string& host);
 	bool isInteger(const std::string& input);

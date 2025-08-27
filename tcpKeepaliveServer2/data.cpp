@@ -1,7 +1,7 @@
 #include "data.h"
 
 std::string Data::getSendMessage(const std::string &message) {
-	std::string sendMessage = "PONG id:[" + this->getClientRequest(message) + "]";
+	std::string sendMessage = "(ClientID: " + this->getClientId(message) + ") PONG id:[" + this->getClientRequest(message) + "]";
 	return sendMessage;
 }
 
@@ -23,6 +23,17 @@ std::string Data::getClientRequest(const std::string& message) {
 	}
 	return output;
 }
+
+std::string Data::getClientId(const std::string& message) {
+	std::string output;
+	std::regex clientIdPattern(R"(\(ClientID: ([a-zA-Z0-9]+)\))");
+	std::smatch numberMatch;
+	if (regex_search(message, numberMatch, clientIdPattern)) {
+		output = numberMatch[1];
+	}
+	return output;
+}
+
 
 std::string Data::strip(const std::string& inputString, const std::string chars) {
 	try {

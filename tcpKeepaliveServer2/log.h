@@ -11,7 +11,7 @@ private:
 	std::string logFile;
 	mutable std::mutex logMutex;
 public: 
-	Log(const std::string& logFile = ".\\logfile.log", int level = 7);
+	Log(const std::string& logFile = ".\\tcpKeepaliveServer2.log", int level = 7);
 	void logger(const std::string& msecTime, int severity, const std::string& message);
 	int getLoggingLevel() const;
 	void setLoggingLevel(int logLevel);

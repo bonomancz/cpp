@@ -7,11 +7,11 @@ Datas::Datas() {
 	}
 }
 
-std::string Datas::getSendMessage() {
+std::string Datas::getSendMessage(std::string &clientId) {
 	{
 		std::lock_guard<std::mutex> lockCounter(messageCounterMutex);
 		this->messageCounter++;
-		std::string sndMsg = "PING id:[" + std::to_string(this->messageCounter) + "]";
+		std::string sndMsg = "(ClientID: " + clientId + ") PING id:[" + std::to_string(this->messageCounter) + "]";
 		return sndMsg;
 	}
 }

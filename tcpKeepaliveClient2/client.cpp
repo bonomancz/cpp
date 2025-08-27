@@ -3,8 +3,9 @@
 void Client::runInThreads() {
 	try {
 		std::string threadLog;
+		std::string clId = getClientId();
 		for (int i = 0; i < this->threadsCount; i++) {
-			this->threads.startNewThread([this, &threadLog]() {
+			this->threads.startNewThread([this, &threadLog, &clId]() {
 				std::thread::id clientThreadId = std::this_thread::get_id();
 				{
 					std::unique_lock<std::mutex> lockStart(mtxStart);
@@ -39,7 +40,7 @@ void Client::runInThreads() {
 							}
 						}
 						else {
-							std::string sendMessage = this->dat.getSendMessage();
+							std::string sendMessage = this->dat.getSendMessage(clId);
 							//std::cout << "Sending: " + sendMessage << std::endl;
 							if (sock.sockSend(clientSocket, sendMessage)) {
 								{
@@ -114,6 +115,18 @@ void Client::processExecParams(int argc, char** argv) {
 	setPort(port);
 	logger(tm.getMillisecTime(), 7, "Parameters set OK.");
 	logger(tm.getMillisecTime(), 7, "Starting communication.");
+}
+
+std::string Client::getClientId() {
+	std::string clientId;
+	int length = 16;
+	std::string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+	std::srand(static_cast<unsigned int>(std::time(nullptr)));
+	for (int i = 0; i < length; i++) {
+		int index = std::rand() % chars.size();
+		clientId += chars[index];
+	}
+	return clientId;
 }
 
 string Client::getMilliSecTime() {

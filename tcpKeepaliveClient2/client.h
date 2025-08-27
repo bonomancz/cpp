@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <ctime>
 #include <thread>
 #include <mutex>
 #include <condition_variable>
@@ -20,6 +21,7 @@ private:
 	int threadsCount;
 	int remotePort;
 	int loopInterval;
+	std::string clientId;
 	std::string remoteHost;
 	std::string remoteUrl;
 	condition_variable cvStop, cvStart;
@@ -34,5 +36,6 @@ public:
 	void processExecParams(int argc, char** argv);
 	void logger(const std::string& msecTime, const int severity, const std::string& message);
 	std::string getMilliSecTime();
+	std::string getClientId();
 };
 

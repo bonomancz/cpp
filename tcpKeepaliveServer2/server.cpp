@@ -7,7 +7,12 @@ void Server::start() {
 				SOCKET clientSocket;
 				std::string clientInfo;
 				if ((clientSocket = sock.acceptSock()) != INVALID_SOCKET) {
-					clientInfo = "Client connected: " + std::string(sock.getClientIpAddr(clientSocket));
+					std::string clientIpStr = std::string(sock.getClientIpAddr(clientSocket));
+					if (clientIpStr == "10.237.171.248" || clientIpStr == "10.237.171.249") {
+						closesocket(clientSocket);
+						continue;
+					}
+					clientInfo = "Client connected: " + clientIpStr;
 					//std::cout << clientInfo << std::endl;
 					logger(tm.getMillisecTime(), 6, clientInfo);
 					this->threads.startNewThread([this, clientSocket]() {
@@ -61,14 +66,28 @@ void Server::handleClient(Socket& sock, SOCKET clientSocket) {
 		auto callbackHandler = [this](SOCKET &clientSocket, std::string &clientMessage) {
 			this->receivedMessageHandler(clientSocket, clientMessage);
 		};
-		sock.receiveSock(clientSocket, clientMessage, callbackHandler, errorMessage);
-		//closesocket(clientSocket);
+		if (!sock.receiveSock(clientSocket, clientMessage, callbackHandler, errorMessage)) {
+			closesocket(clientSocket);
+			logger(tm.getMillisecTime(), 6, "HandleClient(): " + errorMessage);
+			std::thread::id clientThreadId = std::this_thread::get_id();
+			this->threads.setThreadFinished(clientThreadId);
+		}
 	}
 	catch (std::runtime_error& e) {
-		std::cerr << "HandleClient(): Runtime error: " << e.what() << std::endl;
+		closesocket(clientSocket);
+		logger(tm.getMillisecTime(), 6, "HandleClient(): " + std::string(e.what()));
+		//std::cerr << "HandleClient(): " << e.what() << std::endl;
+		// set thread as finished
+		std::thread::id clientThreadId = std::this_thread::get_id();
+		this->threads.setThreadFinished(clientThreadId);
 	}
 	catch (...) {
-		std::cerr << "HandleClient(): Unknown error occured." << std::endl;
+		closesocket(clientSocket);
+		logger(tm.getMillisecTime(), 6, "HandleClient(): Unknown error occured.");
+		//std::cerr << "HandleClient(): Unknown error occured." << std::endl;
+		// set thread as finished
+		std::thread::id clientThreadId = std::this_thread::get_id();
+		this->threads.setThreadFinished(clientThreadId);
 	}
 }
 

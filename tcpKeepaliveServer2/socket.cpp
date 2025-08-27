@@ -71,7 +71,23 @@ bool Socket::receiveSock(SOCKET &clientSocket, std::string &rcvdMessage, std::fu
     int rslt = 0;
     const int bufferLength = 8192;
     char receiveBuffer[bufferLength];
+
     try {
+        // max wait time 1sec for client data else close client connection
+        fd_set readFds;
+        FD_ZERO(&readFds);
+        FD_SET(clientSocket, &readFds);
+        timeval timeout;
+        timeout.tv_sec = 3;
+        timeout.tv_usec = 0;
+        int selectResult = select(0, &readFds, NULL, NULL, &timeout);
+        if (selectResult == 0) {
+            throw std::runtime_error("Socket::receiveSock(): Client timeout: Client connected but sent no data in 3sec. Closing client connection.: " + std::to_string(WSAGetLastError()));
+        }
+        else if (selectResult < 0) {
+            throw std::runtime_error("Socket::receiveSock(): Socket select(): Error: " + std::to_string(WSAGetLastError()));
+        }
+
         do {
             if ((rslt = recv(clientSocket, receiveBuffer, bufferLength, 0)) > 0) {
                 rcvdMessage.append(receiveBuffer, rslt);
@@ -80,12 +96,15 @@ bool Socket::receiveSock(SOCKET &clientSocket, std::string &rcvdMessage, std::fu
                     onMessageReceived(clientSocket, rcvdMessage); // solution with callback call
                     rcvdMessage.clear();
                 }
+                else {
+                    throw std::runtime_error("Socket::receiveSock(): Invalid client request received. Closing client connection.");
+                }
             }
             else if (rslt == 0) { // client connection closing
-                throw std::runtime_error("Socket::receiveSock(): Exception: Server closed connection: " + std::to_string(WSAGetLastError()));
+                throw std::runtime_error("Socket::receiveSock(): Exception: Client closed connection: " + std::to_string(WSAGetLastError()));
             }
             else {
-                throw std::runtime_error("Socket::receiveSock(): Exception: Server data receive error: " + std::to_string(WSAGetLastError()));
+                throw std::runtime_error("Socket::receiveSock(): Exception: Client data receive error: " + std::to_string(WSAGetLastError()));
             }
         } while (rslt > 0);
     }
