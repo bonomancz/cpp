@@ -12,3 +12,4 @@ C++ projects:
 - ntpClient (Windows OS NTP client command line tool gets server NTP response)
 - linked list (demonstrates using of templates and smartpointers against memory leaks)
 - diskConsumptionFinder (very usefull tool to find most disk consumption directory)
+- threadSafeLogger_cpp20 (Thread-safe Logger CMake project written in modern C++20)
