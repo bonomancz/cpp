@@ -14,3 +14,4 @@ C++ projects:
 - diskConsumptionFinder (very usefull tool to find most disk consumption directory)
 - threadSafeLogger_cpp20 (Thread-safe Logger CMake project written in modern C++20)
 - threadPool_cpp23 (THREADPOOL for best performance - uses packaged_task queue with modern C++ idioms)
+- parallelPipeline_cpp23 (thread-safe std::queue based parallel-pipeline provides producer - worker - consumer data flow)
