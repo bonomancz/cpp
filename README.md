@@ -3,6 +3,7 @@ ___________________________
 
 C++ projects:
 
+- threadPool_2026_ringBuffer_queue (high performance thread pool with ring-buffer array queue)
 - tariffserver 2025 (Linux network billing server for Avaya PBX)
 - http_server  (simple HTTP server with threads support)
 - tcpThreadClient (tcp client with threads support)
