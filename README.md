@@ -3,6 +3,7 @@ ___________________________
 
 C++ projects:
 
+- tariffserver 2026 (Modern Linux network billing server for Avaya PBX, Epollet, ringbuffer queues, high performance)
 - threadPool_2026_ringBuffer_queue (high performance thread pool with ring-buffer array queue)
 - tariffserver 2025 (Linux network billing server for Avaya PBX)
 - http_server  (simple HTTP server with threads support)
